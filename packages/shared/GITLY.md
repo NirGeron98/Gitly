@@ -1,6 +1,6 @@
-# Navi shared operating contract
+# Gitly shared operating contract
 
-Navi is a set of agent instructions, not an executable safety boundary. Follow this contract for every Navi skill. Never claim that these Markdown files can prevent an agent or user with terminal access from bypassing them.
+Gitly is a set of agent instructions, not an executable safety boundary. Follow this contract for every Gitly skill. Never claim that these Markdown files can prevent an agent or user with terminal access from bypassing them.
 
 ## Language and evidence
 
@@ -25,7 +25,7 @@ A combined plan may include several exact steps only when the user requested the
 
 ## Command safety
 
-- Use the host agent's native terminal/tool interface. Never require Navi-specific software.
+- Use the host agent's native terminal/tool interface. Never require Gitly-specific software.
 - Pass fixed commands directly. Validate dynamic refs with `git check-ref-format` or resolve them with `git rev-parse --verify --end-of-options` before use.
 - Put `--` before file paths and quote each dynamic value with the terminal tool's safe argument mechanism. Never concatenate repository text into shell syntax and never use `eval`.
 - Never expose secrets through command output, plans, diffs, summaries, or chat. Do not request passwords, tokens, private keys, or one-time codes.
@@ -34,7 +34,7 @@ A combined plan may include several exact steps only when the user requested the
 
 ## Project preferences
 
-Read `.navi/config.md` when it exists. If it does not exist, use these defaults without creating a file:
+Read `.gitly/config.md` when it exists. If it does not exist, use these defaults without creating a file:
 
 ```text
 version: 1
@@ -86,4 +86,4 @@ Use only the skill responsible for the current intent. Coordinate explicitly whe
 - github-connect → sync after a remote exists
 - settings changes affect later actions but never approve them
 
-A general report that the project, site, app, or system is broken does not authorize mutation or restoration. Route unclear breakage and health questions to `navi-check`; use `navi-restore` only when the user explicitly asks to undo work or return to earlier content. Questions about whether work is saved, backed up, current, or at risk route to `navi-status`.
+A general report that the project, site, app, or system is broken does not authorize mutation or restoration. Route unclear breakage and health questions to `gitly-check`; use `gitly-restore` only when the user explicitly asks to undo work or return to earlier content. Questions about whether work is saved, backed up, current, or at risk route to `gitly-status`.

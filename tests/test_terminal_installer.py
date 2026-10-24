@@ -8,13 +8,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INSTALLER = ROOT / "install.sh"
-SKILLS = sorted(path.name for path in (ROOT / "packages/skills").iterdir() if path.name.startswith("navi-"))
+SKILLS = sorted(path.name for path in (ROOT / "packages/skills").iterdir() if path.name.startswith("gitly-"))
 
 
 class TerminalInstallerTests(unittest.TestCase):
     def run_installer(self, project: Path, agent: str) -> subprocess.CompletedProcess[str]:
         env = os.environ.copy()
-        env["NAVI_SOURCE_URL"] = ROOT.as_uri()
+        env["GITLY_SOURCE_URL"] = ROOT.as_uri()
         return subprocess.run(
             ["sh", INSTALLER, agent],
             cwd=project,
@@ -35,7 +35,7 @@ class TerminalInstallerTests(unittest.TestCase):
                     (project / ".agents/skills" / name / "SKILL.md").read_bytes(),
                     (ROOT / "packages/skills" / name / "SKILL.md").read_bytes(),
                 )
-            self.assertEqual((project / ".navi/NAVI.md").read_bytes(), (ROOT / "packages/shared/NAVI.md").read_bytes())
+            self.assertEqual((project / ".gitly/GITLY.md").read_bytes(), (ROOT / "packages/shared/GITLY.md").read_bytes())
 
             second = self.run_installer(project, "codex")
             self.assertEqual(second.returncode, 0, second.stderr)
@@ -44,7 +44,7 @@ class TerminalInstallerTests(unittest.TestCase):
     def test_conflict_stops_before_any_new_file_is_written(self):
         with tempfile.TemporaryDirectory() as temporary:
             project = Path(temporary) / "project"
-            conflict = project / ".agents/skills/navi-save/SKILL.md"
+            conflict = project / ".agents/skills/gitly-save/SKILL.md"
             conflict.parent.mkdir(parents=True)
             conflict.write_text("user version\n", encoding="utf-8")
 
@@ -52,8 +52,8 @@ class TerminalInstallerTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("stopped before making changes", result.stderr)
             self.assertEqual(conflict.read_text(encoding="utf-8"), "user version\n")
-            self.assertFalse((project / ".agents/skills/navi-setup/SKILL.md").exists())
-            self.assertFalse((project / ".navi/NAVI.md").exists())
+            self.assertFalse((project / ".agents/skills/gitly-setup/SKILL.md").exists())
+            self.assertFalse((project / ".gitly/GITLY.md").exists())
 
     def test_unknown_agent_is_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:

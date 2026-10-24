@@ -1,15 +1,15 @@
 ---
-name: navi-save
+name: gitly-save
 description: Review project changes and save an intentional version with a meaningful commit. Use for save/commit requests such as "save everything I did today", "save my progress", "שמור", or "שמור את ההתקדמות".
 ---
 
-# Navi save
+# Gitly save
 
-Read `../../../.navi/NAVI.md` first and follow its approval contract.
+Read `../../../.gitly/GITLY.md` first and follow its approval contract.
 
 ## Responsibility and triggers
 
-Create one truthful local version from an explicitly reviewed set of changes. Examples: “Save my progress,” “save only the login fix,” “commit this,” “שמור את כל מה שעשיתי היום”. Use `navi-setup` when Git or identity is missing and `navi-sync` only for an explicitly requested/configured online backup.
+Create one truthful local version from an explicitly reviewed set of changes. Examples: “Save my progress,” “save only the login fix,” “commit this,” “שמור את כל מה שעשיתי היום”. Use `gitly-setup` when Git or identity is missing and `gitly-sync` only for an explicitly requested/configured online backup.
 
 ## Prerequisites and inspection
 
@@ -26,8 +26,8 @@ Create an evidence-backed, concise commit subject in the user's language unless 
 3. Commit with the approved message.
 4. Verify the new commit ID and that unapproved working changes remain.
 
-If `save_destination` is `local_and_github`, coordinate with `navi-sync`. A separate sync plan/approval is the safe default; a combined approval is valid only when both exact steps and remote effects were shown up front.
+If `save_destination` is `local_and_github`, coordinate with `gitly-sync`. A separate sync plan/approval is the safe default; a combined approval is valid only when both exact steps and remote effects were shown up front.
 
 ## Output, errors, and recovery
 
-Report what was saved, what remains unsaved, the readable description, date, and short commit ID as secondary metadata. Stop on no changes, missing identity, secret uncertainty, ignored files, changed state, hook failure, index mismatch, detached HEAD, or commit failure. A local commit is recoverable through `navi-restore`; never amend or rewrite it silently.
+Report what was saved, what remains unsaved, the readable description, date, and short commit ID as secondary metadata. Stop on no changes, missing identity, secret uncertainty, ignored files, changed state, hook failure, index mismatch, detached HEAD, or commit failure. A local commit is recoverable through `gitly-restore`; never amend or rewrite it silently.

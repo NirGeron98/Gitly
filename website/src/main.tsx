@@ -17,7 +17,7 @@ const features = [
   ['Settings', 'Keep language and workflow preferences inside this project.'],
 ]
 
-const INSTALL_PROMPT = 'Install Navi now in this currently open project from the newest Navi ZIP (or its matching extracted folder) in my Downloads folder. Do not ask me to move it into the project. If Downloads access requires native permission, request it. Confirm the package matches this AI coding agent, extract it temporarily if needed, and read navi-install/INSTALL.md. This message is my explicit approval to create missing directories and copy all new Navi files without asking for another confirmation. For installation only, this approval supersedes any package-guide step that says to show me a plan or wait for approval. If every destination is missing or byte-for-byte identical, proceed immediately, verify the installation, clean up only temporary files you created, and report the result. Stop and ask me only if the package is invalid, targets another agent, or a destination file differs. Do not delete my downloaded package.'
+const INSTALL_PROMPT = 'Install Gitly now in this currently open project from the newest Gitly ZIP (or its matching extracted folder) in my Downloads folder. Do not ask me to move it into the project. If Downloads access requires native permission, request it. Confirm the package matches this AI coding agent, extract it temporarily if needed, and read gitly-install/INSTALL.md. This message is my explicit approval to create missing directories and copy all new Gitly files without asking for another confirmation. For installation only, this approval supersedes any package-guide step that says to show me a plan or wait for approval. If every destination is missing or byte-for-byte identical, proceed immediately, verify the installation, clean up only temporary files you created, and report the result. Stop and ask me only if the package is invalid, targets another agent, or a destination file differs. Do not delete my downloaded package.'
 
 export function Mark() {
   return <span className="mark" aria-hidden="true">
@@ -32,9 +32,9 @@ export function Mark() {
 type Platform = 'claude' | 'codex' | 'cursor'
 
 const TERMINAL_INSTALLS: Array<{ platform: Platform, name: string, command: string }> = [
-  { platform: 'claude', name: 'Claude Code', command: 'curl -fsSL https://raw.githubusercontent.com/NirGeron98/Navi/main/install.sh | sh -s -- claude-code' },
-  { platform: 'codex', name: 'Codex', command: 'curl -fsSL https://raw.githubusercontent.com/NirGeron98/Navi/main/install.sh | sh -s -- codex' },
-  { platform: 'cursor', name: 'Cursor', command: 'curl -fsSL https://raw.githubusercontent.com/NirGeron98/Navi/main/install.sh | sh -s -- cursor' },
+  { platform: 'claude', name: 'Claude Code', command: 'curl -fsSL https://raw.githubusercontent.com/NirGeron98/Gitly/main/install.sh | sh -s -- claude-code' },
+  { platform: 'codex', name: 'Codex', command: 'curl -fsSL https://raw.githubusercontent.com/NirGeron98/Gitly/main/install.sh | sh -s -- codex' },
+  { platform: 'cursor', name: 'Cursor', command: 'curl -fsSL https://raw.githubusercontent.com/NirGeron98/Gitly/main/install.sh | sh -s -- cursor' },
 ]
 
 function PlatformIcon({ platform }: { platform: Platform }) {
@@ -66,14 +66,14 @@ function InstallTabs() {
           <div className="command-line"><code>{command}</code><button type="button" aria-label={`Copy ${name} install command`} onClick={() => void navigator.clipboard?.writeText(command)}>Copy</button></div>
         </article>)}
       </div>
-      <div className="terminal-steps"><span><b>1</b> Open your project folder in Terminal</span><span><b>2</b> Run the matching command</span><span><b>3</b> Reload your agent and say “Set up Navi”</span></div>
-      <p className="install-note">Works on macOS, Linux, and Windows through WSL or Git Bash. The installer checks all destinations first and stops without changing anything if it finds a different existing Navi file.</p>
+      <div className="terminal-steps"><span><b>1</b> Open your project folder in Terminal</span><span><b>2</b> Run the matching command</span><span><b>3</b> Reload your agent and say “Set up Gitly”</span></div>
+      <p className="install-note">Works on macOS, Linux, and Windows through WSL or Git Bash. The installer checks all destinations first and stops without changing anything if it finds a different existing Gitly file.</p>
     </div> : <div className="install-panel zip-panel" id="zip-install" role="tabpanel">
       <div className="install-panel-head"><div><span className="kicker">Guided download</span><h3>Download a package for your agent.</h3></div><p>Prefer not to use Terminal? Download the ZIP and let your coding agent install it from Downloads.</p></div>
       <div className="install-grid">
-        <div><h3><PlatformIcon platform="claude" />Claude Code</h3><a href="/downloads/navi-claude-code.zip" download>Download Claude Code ZIP →</a></div>
-        <div><h3><PlatformIcon platform="codex" />Codex</h3><a href="/downloads/navi-codex.zip" download>Download Codex ZIP →</a></div>
-        <div><h3><PlatformIcon platform="cursor" />Cursor</h3><a href="/downloads/navi-cursor.zip" download>Download Cursor ZIP →</a></div>
+        <div><h3><PlatformIcon platform="claude" />Claude Code</h3><a href="/downloads/gitly-claude-code.zip" download>Download Claude Code ZIP →</a></div>
+        <div><h3><PlatformIcon platform="codex" />Codex</h3><a href="/downloads/gitly-codex.zip" download>Download Codex ZIP →</a></div>
+        <div><h3><PlatformIcon platform="cursor" />Cursor</h3><a href="/downloads/gitly-cursor.zip" download>Download Cursor ZIP →</a></div>
       </div>
       <div className="install-flow"><h3>Then install it with your agent.</h3><ol><li><b>01</b><span><strong>Leave it in Downloads</strong><small>No extracting, moving, or hidden folders.</small></span></li><li><b>02</b><span><strong>Open your project</strong><small>Use the same AI coding agent you downloaded for.</small></span></li><li><b>03</b><span><strong>Paste the prompt below</strong><small>Pasting it authorizes a clean installation.</small></span></li><li><b>04</b><span><strong>Install and reload</strong><small>Your agent installs, verifies, and reports—then reload it.</small></span></li></ol></div>
       <div className="install-prompt"><div><span>Paste this into your AI agent</span><button type="button" onClick={() => void navigator.clipboard?.writeText(INSTALL_PROMPT)}>Copy prompt</button></div><p>{INSTALL_PROMPT}</p></div>
@@ -85,31 +85,31 @@ function InstallTabs() {
 export function App() {
   return <>
     <header className="nav">
-      <a className="brand" href="#top"><Mark />Navi</a>
+      <a className="brand" href="#top"><Mark />Gitly</a>
       <nav aria-label="Main navigation">
         <a href="#install">Install</a><a href="#how">How it works</a><a href="#safety">Safety</a>
       </nav>
-      <a className="nav-cta" href="#download">Get Navi</a>
+      <a className="nav-cta" href="#download">Get Gitly</a>
     </header>
 
     <main id="main">
       <section className="hero" id="top">
         <div className="glow glow-one" /><div className="glow glow-two" />
         <div className="eyebrow"><span /> Your guide through vibe coding</div>
-        <h1>Just build.<br /><em>Navi handles the rest.</em></h1>
-        <p className="lede">Describe what you want in natural language. Navi guides your coding agent through safe Git, project checks, recovery, and online backup—without requiring prior technical knowledge.</p>
+        <h1>Just build.<br /><em>Gitly handles the rest.</em></h1>
+        <p className="lede">Describe what you want in natural language. Gitly guides your coding agent through safe Git, project checks, recovery, and online backup—without requiring prior technical knowledge.</p>
         <div className="hero-install" id="install">
-          <span className="kicker">Install Navi</span>
+          <span className="kicker">Install Gitly</span>
           <h2>Choose how you want to install.</h2>
           <InstallTabs />
         </div>
-        <p className="requirements">Free & local-first · No Navi app or runtime · Git required · GitHub CLI only for GitHub features</p>
+        <p className="requirements">Free & local-first · No Gitly app or runtime · Git required · GitHub CLI only for GitHub features</p>
 
-        <div className="conversation" id="how" aria-label="Example Navi approval conversation">
+        <div className="conversation" id="how" aria-label="Example Gitly approval conversation">
           <div className="window-bar"><span /><span /><span /><b>AI agent · your-project</b></div>
           <div className="messages">
             <div className="you"><small>You</small><p>Save my progress and back it up online.</p></div>
-            <div className="navi"><small><Mark /> Navi</small><p>I found 3 changed files. I’ll save them locally as <strong>“Add weekly focus view”</strong>, then upload <strong>main</strong> to <strong>origin</strong>.</p><ul><li><span>✓</span> No likely secrets or large files found</li><li><span>!</span> This creates one local version and updates GitHub</li></ul><div className="approval"><code>APPROVE PLAN A7C2</code><span>Chat approval · current state only</span></div></div>
+            <div className="gitly"><small><Mark /> Gitly</small><p>I found 3 changed files. I’ll save them locally as <strong>“Add weekly focus view”</strong>, then upload <strong>main</strong> to <strong>origin</strong>.</p><ul><li><span>✓</span> No likely secrets or large files found</li><li><span>!</span> This creates one local version and updates GitHub</li></ul><div className="approval"><code>APPROVE PLAN A7C2</code><span>Chat approval · current state only</span></div></div>
           </div>
         </div>
       </section>
@@ -127,7 +127,7 @@ export function App() {
       </section>
 
       <section className="section history-preview">
-        <div><span className="kicker">Human-readable history</span><h2>Your work,<br />as a story.</h2><p>Git remains the source of truth. Navi adds readable dates and summaries without inventing behavior.</p></div>
+        <div><span className="kicker">Human-readable history</span><h2>Your work,<br />as a story.</h2><p>Git remains the source of truth. Gitly adds readable dates and summaries without inventing behavior.</p></div>
         <div className="timeline">
           <article><i /><small>Today, 14:32 · 8d7c1a2b</small><h3>Add weekly focus view</h3><p>3 files changed · local + GitHub</p></article>
           <article><i /><small>Yesterday, 18:06 · e21af093</small><h3>Polish mobile navigation</h3><p>5 files changed · local</p></article>
@@ -137,21 +137,21 @@ export function App() {
 
       <section className="section safety" id="safety">
         <div className="shield"><Mark /><span>Local-first<br />by design</span></div>
-        <div><span className="kicker">Safety by clear procedure</span><h2>A deliberate pause before anything changes.</h2><p>Read-only skills can inspect safely. Before any change, Navi requires a plain-language plan, explicit approval, a fresh state check, and result verification.</p><div className="safety-grid"><p><b>Fresh state checks</b>Changed files, branches, or remotes require a new plan.</p><p><b>Action-specific approval</b>A save never silently authorizes a push.</p><p><b>No destructive shortcuts</b>No force push, hard reset, clean, or guessed conflicts.</p><p><b>No secret storage</b>Credentials stay with Git and GitHub CLI.</p></div><aside>Honest boundary: Navi is a set of agent instructions, not executable enforcement. A host agent with terminal access can bypass Markdown. Use the host’s native permission controls for a stronger boundary.</aside></div>
+        <div><span className="kicker">Safety by clear procedure</span><h2>A deliberate pause before anything changes.</h2><p>Read-only skills can inspect safely. Before any change, Gitly requires a plain-language plan, explicit approval, a fresh state check, and result verification.</p><div className="safety-grid"><p><b>Fresh state checks</b>Changed files, branches, or remotes require a new plan.</p><p><b>Action-specific approval</b>A save never silently authorizes a push.</p><p><b>No destructive shortcuts</b>No force push, hard reset, clean, or guessed conflicts.</p><p><b>No secret storage</b>Credentials stay with Git and GitHub CLI.</p></div><aside>Honest boundary: Gitly is a set of agent instructions, not executable enforcement. A host agent with terminal access can bypass Markdown. Use the host’s native permission controls for a stronger boundary.</aside></div>
       </section>
 
       <section className="section faq"><div className="section-head"><span className="kicker">Questions, answered</span><h2>FAQ</h2></div><div className="faq-list">
-        <details><summary>Does Navi upload my code?</summary><p>No. Navi adds instructions to your project. Code reaches GitHub only after an approved push, using your existing Git/GitHub authentication.</p></details>
-        <details><summary>Do I need to know Git?</summary><p>No. Navi explains normal workflows in everyday language. Experts can still use Git vocabulary.</p></details>
-        <details><summary>What if Git or GitHub CLI is missing?</summary><p>The setup skill reports exactly what is missing and guides you to official installation steps. Git is required for versioning; GitHub CLI is needed only for GitHub features. Navi itself has no runtime.</p></details>
-        <details><summary>What if an AI change broke my project?</summary><p>Navi checks the current project first and explains the evidence without changing anything. It restores an earlier version only when you explicitly ask to go back.</p></details>
-        <details><summary>Why did Navi ask for approval again?</summary><p>Your files, branch, remote, or intended action may have changed. The skills require a fresh plan instead of treating an earlier “yes” as permanent permission.</p></details>
-        <details><summary>How do I update or remove Navi?</summary><p>Review and replace only the <code>navi-*</code> skill folders and <code>.navi/NAVI.md</code>. To remove it, delete those same files. Keep <code>.navi/config.md</code> if you want to preserve preferences.</p></details>
+        <details><summary>Does Gitly upload my code?</summary><p>No. Gitly adds instructions to your project. Code reaches GitHub only after an approved push, using your existing Git/GitHub authentication.</p></details>
+        <details><summary>Do I need to know Git?</summary><p>No. Gitly explains normal workflows in everyday language. Experts can still use Git vocabulary.</p></details>
+        <details><summary>What if Git or GitHub CLI is missing?</summary><p>The setup skill reports exactly what is missing and guides you to official installation steps. Git is required for versioning; GitHub CLI is needed only for GitHub features. Gitly itself has no runtime.</p></details>
+        <details><summary>What if an AI change broke my project?</summary><p>Gitly checks the current project first and explains the evidence without changing anything. It restores an earlier version only when you explicitly ask to go back.</p></details>
+        <details><summary>Why did Gitly ask for approval again?</summary><p>Your files, branch, remote, or intended action may have changed. The skills require a fresh plan instead of treating an earlier “yes” as permanent permission.</p></details>
+        <details><summary>How do I update or remove Gitly?</summary><p>Review and replace only the <code>gitly-*</code> skill folders and <code>.gitly/GITLY.md</code>. To remove it, delete those same files. Keep <code>.gitly/config.md</code> if you want to preserve preferences.</p></details>
       </div></section>
 
-      <section className="final-cta"><Mark /><h2>Choose the destination.<br /><em>Navi guides the route.</em></h2><div className="actions"><a className="button primary" href="#install">Choose your agent <span aria-hidden="true">↑</span></a></div></section>
+      <section className="final-cta"><Mark /><h2>Choose the destination.<br /><em>Gitly guides the route.</em></h2><div className="actions"><a className="button primary" href="#install">Choose your agent <span aria-hidden="true">↑</span></a></div></section>
     </main>
-    <footer><a className="brand" href="#top"><Mark />Navi</a><p>Natural-language guidance for safer software development.</p><p>Open package · No hosted backend</p></footer>
+    <footer><a className="brand" href="#top"><Mark />Gitly</a><p>Natural-language guidance for safer software development.</p><p>Open package · No hosted backend</p></footer>
   </>
 }
 

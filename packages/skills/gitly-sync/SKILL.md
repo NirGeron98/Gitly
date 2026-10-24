@@ -1,15 +1,15 @@
 ---
-name: navi-sync
+name: gitly-sync
 description: Explain and safely synchronize local work with a Git remote using fetch, fast-forward pull, or non-force push. Use for sync, push, pull, online backup, "back it up", "סנכרן", or "גיבוי בענן".
 ---
 
-# Navi sync
+# Gitly sync
 
-Read `../../../.navi/NAVI.md` first and follow its approval contract.
+Read `../../../.gitly/GITLY.md` first and follow its approval contract.
 
 ## Responsibility and triggers
 
-Move versions between the local project and a configured remote without overwriting history. Examples: “Back up my project to GitHub,” “get the online changes,” “סנכרן עם גיטהאב”. Use `navi-github-connect` when authentication or a remote is missing and `navi-save` when local changes need a version first.
+Move versions between the local project and a configured remote without overwriting history. Examples: “Back up my project to GitHub,” “get the online changes,” “סנכרן עם גיטהאב”. Use `gitly-github-connect` when authentication or a remote is missing and `gitly-save` when local changes need a version first.
 
 ## Prerequisites and inspection
 

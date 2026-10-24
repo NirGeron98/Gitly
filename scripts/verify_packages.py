@@ -10,11 +10,11 @@ from build_packages import AGENTS, GUIDE_PATH, OUTPUT, PACKAGE_ROOT, SKILLS
 
 def main() -> None:
     for agent, skill_root in AGENTS.items():
-        archive = OUTPUT / f"navi-{agent}.zip"
+        archive = OUTPUT / f"gitly-{agent}.zip"
         assert archive.is_file() and archive.stat().st_size > 1000
         with zipfile.ZipFile(archive) as package:
             names = set(package.namelist())
-            expected = {GUIDE_PATH.as_posix(), f"{PACKAGE_ROOT.as_posix()}/shared/NAVI.md"} | {
+            expected = {GUIDE_PATH.as_posix(), f"{PACKAGE_ROOT.as_posix()}/shared/GITLY.md"} | {
                 f"{PACKAGE_ROOT.as_posix()}/skills/{name}/SKILL.md" for name in SKILLS
             }
             assert names == expected, (agent, sorted(names ^ expected))
@@ -31,7 +31,7 @@ def main() -> None:
                 for name in SKILLS:
                     skill = root / PACKAGE_ROOT / "skills" / name / "SKILL.md"
                     assert skill.is_file()
-                assert (root / PACKAGE_ROOT / "shared/NAVI.md").is_file()
+                assert (root / PACKAGE_ROOT / "shared/GITLY.md").is_file()
     print("Package verification passed for Claude Code, Codex, and Cursor.")
 
 

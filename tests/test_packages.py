@@ -20,11 +20,11 @@ class PackageTests(unittest.TestCase):
     def test_agent_archives_are_visible_guided_and_runtime_free(self):
         self.assertEqual(len(SKILLS), 12)
         for agent, skill_root in AGENTS.items():
-            archive = OUTPUT / f"navi-{agent}.zip"
+            archive = OUTPUT / f"gitly-{agent}.zip"
             with zipfile.ZipFile(archive) as package:
                 names = set(package.namelist())
                 guide = package.read(GUIDE_PATH.as_posix()).decode("utf-8")
-            expected = {GUIDE_PATH.as_posix(), f"{PACKAGE_ROOT.as_posix()}/shared/NAVI.md"} | {
+            expected = {GUIDE_PATH.as_posix(), f"{PACKAGE_ROOT.as_posix()}/shared/GITLY.md"} | {
                 f"{PACKAGE_ROOT.as_posix()}/skills/{name}/SKILL.md" for name in SKILLS
             }
             self.assertEqual(names, expected)
@@ -38,27 +38,27 @@ class PackageTests(unittest.TestCase):
             self.assertFalse(any("installer" in name.lower() or "payload" in name.lower() for name in names))
 
     def test_existing_file_collisions_are_detectable_before_copy(self):
-        archive = OUTPUT / "navi-claude-code.zip"
+        archive = OUTPUT / "gitly-claude-code.zip"
         with tempfile.TemporaryDirectory() as temporary:
             project = Path(temporary)
-            existing = project / ".claude/skills/navi-save/SKILL.md"
+            existing = project / ".claude/skills/gitly-save/SKILL.md"
             existing.parent.mkdir(parents=True)
             existing.write_text("existing user version\n", encoding="utf-8")
-            self.assertEqual(collision_paths(archive, project, "claude-code"), [".claude/skills/navi-save/SKILL.md"])
+            self.assertEqual(collision_paths(archive, project, "claude-code"), [".claude/skills/gitly-save/SKILL.md"])
             self.assertEqual(existing.read_text(), "existing user version\n")
 
     def test_legacy_os_archives_are_removed(self):
-        self.assertFalse((OUTPUT / "navi-macos.zip").exists())
-        self.assertFalse((OUTPUT / "navi-windows.zip").exists())
+        self.assertFalse((OUTPUT / "gitly-macos.zip").exists())
+        self.assertFalse((OUTPUT / "gitly-windows.zip").exists())
 
     def test_website_points_to_all_real_packages(self):
         source = (ROOT / "website/src/main.tsx").read_text(encoding="utf-8")
         for agent in AGENTS:
-            name = f"navi-{agent}.zip"
+            name = f"gitly-{agent}.zip"
             self.assertIn(f"/downloads/{name}", source)
             self.assertTrue((OUTPUT / name).is_file())
-        self.assertNotIn("navi-macos.zip", source)
-        self.assertNotIn("navi-windows.zip", source)
+        self.assertNotIn("gitly-macos.zip", source)
+        self.assertNotIn("gitly-windows.zip", source)
         self.assertNotIn("Python 3", source)
         self.assertIn("Downloads folder", source)
         self.assertIn("explicit approval", source)
@@ -73,7 +73,7 @@ class PackageTests(unittest.TestCase):
         self.assertIn("Download ZIP", source)
         for agent in AGENTS:
             self.assertIn(f"sh -s -- {agent}", source)
-        self.assertIn("raw.githubusercontent.com/NirGeron98/Navi/main/install.sh", source)
+        self.assertIn("raw.githubusercontent.com/NirGeron98/Gitly/main/install.sh", source)
 
 
 if __name__ == "__main__":

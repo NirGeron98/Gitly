@@ -1,19 +1,19 @@
 ---
-name: navi-setup
-description: Check Git readiness and safely prepare a project repository. Use for Navi setup, initialization, Git identity, ignore-file, "set up Git", "הגדר גיט", or "אתחל מאגר" requests.
+name: gitly-setup
+description: Check Git readiness and safely prepare a project repository. Use for Gitly setup, initialization, Git identity, ignore-file, "set up Git", "הגדר גיט", or "אתחל מאגר" requests.
 ---
 
-# Navi setup
+# Gitly setup
 
-Read `../../../.navi/NAVI.md` first and follow its approval contract.
+Read `../../../.gitly/GITLY.md` first and follow its approval contract.
 
 ## Responsibility and triggers
 
-Prepare a project for safe local versioning without assuming Git knowledge. Examples: “Set up Navi,” “start keeping versions,” “Is Git ready?”, “הגדר את Navi”, “תתחיל לשמור גרסאות”. Coordinate with `navi-github-connect` only when the user also wants GitHub.
+Prepare a project for safe local versioning without assuming Git knowledge. Examples: “Set up Gitly,” “start keeping versions,” “Is Git ready?”, “הגדר את Gitly”, “תתחיל לשמור גרסאות”. Coordinate with `gitly-github-connect` only when the user also wants GitHub.
 
 ## Prerequisites and inspection
 
-Check whether `git` is available and report its version. From the exact project directory inspect repository root, current branch, HEAD, status, `user.name`, `user.email`, `.gitignore`, remotes, worktree/submodule context, and `.navi/config.md`. These checks are read-only. Do not invent identity values or initialize a parent directory accidentally.
+Check whether `git` is available and report its version. From the exact project directory inspect repository root, current branch, HEAD, status, `user.name`, `user.email`, `.gitignore`, remotes, worktree/submodule context, and `.gitly/config.md`. These checks are read-only. Do not invent identity values or initialize a parent directory accidentally.
 
 If Git is missing, provide official platform-appropriate installation guidance. Installing software is a separate mutation and requires approval. GitHub CLI is optional here.
 

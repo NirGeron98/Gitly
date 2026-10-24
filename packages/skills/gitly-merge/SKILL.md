@@ -1,15 +1,15 @@
 ---
-name: navi-merge
+name: gitly-merge
 description: Inspect and safely combine an experiment branch with the current project. Use for merge/integration requests such as "put the changes into my main project", "merge", "מזג", or "שלב את הניסוי".
 ---
 
-# Navi merge
+# Gitly merge
 
-Read `../../../.navi/NAVI.md` first and follow its approval contract.
+Read `../../../.gitly/GITLY.md` first and follow its approval contract.
 
 ## Responsibility and triggers
 
-Bring an approved line of work into another without guessing through conflicts. Examples: “Put the experiment into my main project,” “merge the login branch,” “שלב את הניסוי בפרויקט הראשי”. Use `navi-branches` when the source/destination is not yet clear and `navi-save` if pending work must be saved first.
+Bring an approved line of work into another without guessing through conflicts. Examples: “Put the experiment into my main project,” “merge the login branch,” “שלב את הניסוי בפרויקט הראשי”. Use `gitly-branches` when the source/destination is not yet clear and `gitly-save` if pending work must be saved first.
 
 ## Prerequisites and inspection
 
@@ -23,4 +23,4 @@ If conflicts occur, stop immediately. Preserve conflict markers and both sides, 
 
 ## Output, errors, and recovery
 
-Verify and report the fast-forward/merge commit, included versions, checks performed, and remaining branches. On failure report the exact safe state without dumping secrets. Recovery before completion is an explicitly approved `git merge --abort`; after completion use `navi-restore`/revert rather than rewriting history.
+Verify and report the fast-forward/merge commit, included versions, checks performed, and remaining branches. On failure report the exact safe state without dumping secrets. Recovery before completion is an explicitly approved `git merge --abort`; after completion use `gitly-restore`/revert rather than rewriting history.

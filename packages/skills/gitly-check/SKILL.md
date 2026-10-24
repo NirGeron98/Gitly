@@ -1,15 +1,15 @@
 ---
-name: navi-check
+name: gitly-check
 description: Assess whether the current project still works and identify failures after code or AI changes. Use for broad reports of breakage, errors, failed builds or tests, unexpected behavior, or uncertainty about project health; use restore instead only when the user explicitly wants to go back.
 ---
 
-# Navi check
+# Gitly check
 
-Read `../../../.navi/NAVI.md` first and follow its approval, evidence, and language rules.
+Read `../../../.gitly/GITLY.md` first and follow its approval, evidence, and language rules.
 
 ## Responsibility and triggers
 
-Gather evidence about whether the current project works, without assuming technical vocabulary or a particular framework. Requests may describe any symptom, such as a page no longer opening, something behaving strangely after a recent change, a build failing, or “משהו בפרויקט כבר לא עובד”. A general report of breakage starts here; it never authorizes a fix or restoration. Use `navi-restore` directly only when the user explicitly asks to undo work or return to an earlier state.
+Gather evidence about whether the current project works, without assuming technical vocabulary or a particular framework. Requests may describe any symptom, such as a page no longer opening, something behaving strangely after a recent change, a build failing, or “משהו בפרויקט כבר לא עובד”. A general report of breakage starts here; it never authorizes a fix or restoration. Use `gitly-restore` directly only when the user explicitly asks to undo work or return to an earlier state.
 
 ## Prerequisites and inspection
 
@@ -27,6 +27,6 @@ After execution, verify the command result and inspect Git status again so gener
 
 Separate what passed, what failed, and what was not tested. Explain the likely affected area only when supported by errors, diffs, or check results; label inferences clearly. Never claim the project works merely because a build or one test passed.
 
-If the user wants to repair the current version, hand off the evidence to the host agent's normal coding workflow. If they explicitly choose to return to a previous version, coordinate with `navi-history`, `navi-compare`, and then `navi-restore`. A failed check or a general “it broke” message is never restoration approval.
+If the user wants to repair the current version, hand off the evidence to the host agent's normal coding workflow. If they explicitly choose to return to a previous version, coordinate with `gitly-history`, `gitly-compare`, and then `gitly-restore`. A failed check or a general “it broke” message is never restoration approval.
 
 If an approved check creates or changes files, preserve them, report every affected path, and require a separate reviewed plan before cleanup. Stop on missing dependencies, unknown commands, prompts requiring secrets, unexpected network access, timeouts, state changes, or commands whose scope is broader than the user approved.

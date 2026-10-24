@@ -1,15 +1,15 @@
 ---
-name: navi-history
+name: gitly-history
 description: Display searchable project versions in everyday language. Use for history, previous versions, "show me the last five versions", "היסטוריה", or "גרסאות קודמות".
 ---
 
-# Navi history
+# Gitly history
 
-Read `../../../.navi/NAVI.md` first and follow its evidence and language rules.
+Read `../../../.gitly/GITLY.md` first and follow its evidence and language rules.
 
 ## Responsibility and triggers
 
-Present reachable Git history as versions a non-technical user can recognize. Examples: “Show the last five versions,” “find the version where login changed,” “מה היו חמש הגרסאות האחרונות”. Coordinate with `navi-compare` or `navi-restore` only after candidates are identified.
+Present reachable Git history as versions a non-technical user can recognize. Examples: “Show the last five versions,” “find the version where login changed,” “מה היו חמש הגרסאות האחרונות”. Coordinate with `gitly-compare` or `gitly-restore` only after candidates are identified.
 
 ## Prerequisites and inspection
 

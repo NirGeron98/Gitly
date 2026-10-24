@@ -1,15 +1,15 @@
 ---
-name: navi-compare
+name: gitly-compare
 description: Compare two reachable versions or a version with current work using Git evidence. Use for "what changed", "compare yesterday and today", "מה השתנה", or "השווה גרסאות".
 ---
 
-# Navi compare
+# Gitly compare
 
-Read `../../../.navi/NAVI.md` first and follow its evidence and language rules.
+Read `../../../.gitly/GITLY.md` first and follow its evidence and language rules.
 
 ## Responsibility and triggers
 
-Explain meaningful differences between two chosen versions, or between one version and current work. Examples: “What changed between yesterday and today?”, “compare version 2 with 5,” “מה השתנה מאז אתמול”. Use `navi-history` to resolve ambiguous human descriptions first.
+Explain meaningful differences between two chosen versions, or between one version and current work. Examples: “What changed between yesterday and today?”, “compare version 2 with 5,” “מה השתנה מאז אתמול”. Use `gitly-history` to resolve ambiguous human descriptions first.
 
 ## Prerequisites and inspection
 
@@ -21,4 +21,4 @@ No approval is needed because comparison is read-only. Group verified changes in
 
 ## Output, errors, and recovery
 
-Name both endpoints with dates/descriptions and secondary IDs, then give a concise plain-language summary and file-level evidence. Say when no difference exists. Report ambiguous/missing refs, unrelated history, shallow clone gaps, binary files, oversized diffs, and dirty-tree boundaries. Offer restore only as a separate `navi-restore` workflow. Recovery is unnecessary because this skill is read-only.
+Name both endpoints with dates/descriptions and secondary IDs, then give a concise plain-language summary and file-level evidence. Say when no difference exists. Report ambiguous/missing refs, unrelated history, shallow clone gaps, binary files, oversized diffs, and dirty-tree boundaries. Offer restore only as a separate `gitly-restore` workflow. Recovery is unnecessary because this skill is read-only.

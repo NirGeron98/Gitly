@@ -1,15 +1,15 @@
 ---
-name: navi-github-connect
+name: gitly-github-connect
 description: Check GitHub CLI authentication and safely create or link a GitHub repository. Use for GitHub connection, online backup setup, "connect to GitHub", or "חבר לגיטהאב".
 ---
 
-# Navi GitHub connection
+# Gitly GitHub connection
 
-Read `../../../.navi/NAVI.md` first and follow its approval contract.
+Read `../../../.gitly/GITLY.md` first and follow its approval contract.
 
 ## Responsibility and triggers
 
-Connect a local project to GitHub through trusted tooling. Examples: “Connect this to GitHub,” “create a private online backup,” “חבר את הפרויקט לגיטהאב”. Coordinate with `navi-setup` if no local repository exists and `navi-sync` after a remote is ready.
+Connect a local project to GitHub through trusted tooling. Examples: “Connect this to GitHub,” “create a private online backup,” “חבר את הפרויקט לגיטהאב”. Coordinate with `gitly-setup` if no local repository exists and `gitly-sync` after a remote is ready.
 
 ## Prerequisites and inspection
 
@@ -25,4 +25,4 @@ Recheck authentication, selected account, root, and remotes after approval. Veri
 
 ## Output, errors, and recovery
 
-Report account context safely, visibility, remote name, and that code is still local until `navi-sync` is approved. Stop on SSO/organization restrictions, occupied remotes, invalid URLs, ambiguous ownership, authentication failure, or existing repositories. Remote removal and GitHub repository deletion are separate destructive requests and are never automatic.
+Report account context safely, visibility, remote name, and that code is still local until `gitly-sync` is approved. Stop on SSO/organization restrictions, occupied remotes, invalid URLs, ambiguous ownership, authentication failure, or existing repositories. Remote removal and GitHub repository deletion are separate destructive requests and are never automatic.

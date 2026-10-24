@@ -1,15 +1,15 @@
 ---
-name: navi-branches
+name: gitly-branches
 description: List, create, and switch safe branches or isolated worktree experiments. Use for experiments, "try this without breaking my app", branch requests, "ניסוי", or "ענף".
 ---
 
-# Navi branches
+# Gitly branches
 
-Read `../../../.navi/NAVI.md` first and follow its approval contract.
+Read `../../../.gitly/GITLY.md` first and follow its approval contract.
 
 ## Responsibility and triggers
 
-Create safe places to experiment and explain them without requiring Git vocabulary. Examples: “I want to experiment without breaking my current app,” “switch back to the working version,” “תנסה משהו בלי לפגוע באפליקציה”. Coordinate with `navi-merge` when the experiment is ready.
+Create safe places to experiment and explain them without requiring Git vocabulary. Examples: “I want to experiment without breaking my current app,” “switch back to the working version,” “תנסה משהו בלי לפגוע באפליקציה”. Coordinate with `gitly-merge` when the experiment is ready.
 
 ## Prerequisites and inspection
 
