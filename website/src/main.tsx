@@ -2,19 +2,19 @@ import { StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 
-const features = [
-  ['Setup', 'Check Git readiness and prepare the project without technical guesswork.'],
-  ['Status', 'See what is saved, unsaved, backed up, current, or at risk.'],
-  ['Check', 'Verify the project with its own approved build, test, and lint commands.'],
-  ['Save', 'Review exactly what changed, then create a clean local version.'],
-  ['History', 'See past versions as a readable timeline, not a wall of hashes.'],
-  ['Compare', 'Understand verified file changes and clearly labeled inferences.'],
-  ['Restore', 'Return selected files safely, with a recovery checkpoint when needed.'],
-  ['Experiments', 'Try an idea on a branch or in an isolated worktree.'],
-  ['Merge', 'Bring good experiments home without guessing through conflicts.'],
-  ['GitHub', 'Connect through the trusted GitHub CLI—never paste a token into chat.'],
-  ['Sync', 'See what is local and online before any fetch, pull, or push.'],
-  ['Settings', 'Keep language and workflow preferences inside this project.'],
+const features: [string, string, string, string, string][] = [
+  ['Setup', 'Check Git readiness and prepare the project without technical guesswork.', 'M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM19.4 13a7.5 7.5 0 0 0 0-2l2-1.5-2-3.4-2.3 1a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 3.1a7.4 7.4 0 0 0-1.7 1l-2.3-1-2 3.4L6.6 11a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-3.1a7.4 7.4 0 0 0 1.7-1l2.3 1 2-3.4z', '“Get this project ready.”', 'Git found · repository created · ready'],
+  ['Status', 'See what is saved, unsaved, backed up, current, or at risk.', 'M3 12h4l3-8 4 16 3-8h4', '“Where do things stand?”', '3 unsaved files · 1 version not on GitHub'],
+  ['Check', 'Verify the project with its own approved build, test, and lint commands.', 'M5 12.5l4.5 4.5L19 7.5', '“Make sure nothing is broken.”', 'Build ✓ · Tests ✓ · Lint ✓'],
+  ['Save', 'Review exactly what changed, then create a clean local version.', 'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6', '“Save my progress.”', 'Saved: “Add weekly focus view”'],
+  ['History', 'See past versions as a readable timeline, not a wall of hashes.', 'M12 7v5l3 2M4 12a8 8 0 1 0 2.6-5.9M4 4v4h4', '“Show me what happened this week.”', 'Today · Yesterday · Mon — one line each'],
+  ['Compare', 'Understand verified file changes and clearly labeled inferences.', 'M8 4v16M16 4v16M4 8l4-4 4 4M12 16l4 4 4-4', '“What changed between version 2 and 5?”', '4 files changed · header redesigned'],
+  ['Restore', 'Return selected files safely, with a recovery checkpoint when needed.', 'M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3', '“Go back to how app.css was yesterday.”', 'Checkpoint saved · app.css restored'],
+  ['Experiments', 'Try an idea on a branch or in an isolated worktree.', 'M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3', '“Try a new dashboard safely.”', 'Branch “new-dashboard” · main untouched'],
+  ['Merge', 'Bring good experiments home without guessing through conflicts.', 'M6 4v6a4 4 0 0 0 4 4h4M6 4a1.5 1.5 0 1 0 0 .01M6 20V10M18 14a1.5 1.5 0 1 0 0 .01M6 20a1.5 1.5 0 1 0 0 .01', '“Keep the new dashboard.”', 'Merged cleanly · 0 conflicts'],
+  ['GitHub', 'Connect through the trusted GitHub CLI—never paste a token into chat.', 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9.5a4.2 4.2 0 0 1-.5 8.5H7zM12 16v-5M9.5 13l2.5-2.500 2.500 2.500', '“Connect this project to GitHub.”', 'Signed in via GitHub CLI · no token shared'],
+  ['Sync', 'See what is local and online before any fetch, pull, or push.', 'M4 10a8 8 0 0 1 14-3l2 2M20 4v5h-5M20 14a8 8 0 0 1-14 3l-2-2M4 20v-5h5', '“Is my work backed up?”', '2 versions ahead · nothing to download'],
+  ['Settings', 'Keep language and workflow preferences inside this project.', 'M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4', '“From now on, only save locally.”', 'Preference saved in this project'],
 ]
 
 const INSTALL_PROMPT = 'Install Gitly now in this currently open project from the newest Gitly ZIP (or its matching extracted folder) in my Downloads folder. Do not ask me to move it into the project. If Downloads access requires native permission, request it. Confirm the package matches this AI coding agent, extract it temporarily if needed, and read gitly-install/INSTALL.md. This message is my explicit approval to create missing directories and copy all new Gitly files without asking for another confirmation. For installation only, this approval supersedes any package-guide step that says to show me a plan or wait for approval. If every destination is missing or byte-for-byte identical, proceed immediately, verify the installation, clean up only temporary files you created, and report the result. Stop and ask me only if the package is invalid, targets another agent, or a destination file differs. Do not delete my downloaded package.'
@@ -125,7 +125,7 @@ export function App() {
 
       <section className="section feature-section">
         <div className="section-head"><span className="kicker">Twelve guided workflows</span><h2>One clear route forward.</h2></div>
-        <div className="feature-grid">{features.map(([title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+        <div className="feature-grid">{features.map(([title, text, icon, say, result], index) => <article key={title} tabIndex={0}><div className="feature-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon} /></svg><span>{String(index + 1).padStart(2, '0')}</span></div><h3>{title}</h3><p>{text}</p><div className="feature-pop" role="tooltip"><small>You say</small><q>{say.replace(/[“”]/g, '')}</q><small>Gitly shows</small><b>{result}</b></div></article>)}</div>
       </section>
 
       <section className="section history-preview">
