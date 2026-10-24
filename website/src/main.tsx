@@ -22,9 +22,11 @@ const INSTALL_PROMPT = 'Install Gitly now in this currently open project from th
 export function Mark() {
   return <span className="mark" aria-hidden="true">
     <svg viewBox="0 0 32 32">
-      <circle cx="7" cy="24" r="2.5" />
-      <path d="M9.5 23c4.7-2.2 2.1-7.1 6.5-9.4 3.5-1.8 6.1-.1 9-6.6" />
-      <path d="M19.5 7H25v5.5" />
+      <circle cx="8" cy="7" r="2.5" />
+      <circle cx="8" cy="25" r="2.5" />
+      <circle cx="24" cy="8" r="2.5" />
+      <path d="M8 9.5v13" />
+      <path d="M24 10.5v1c0 4.7-3.8 8.5-8.5 8.5H8" />
     </svg>
   </span>
 }
