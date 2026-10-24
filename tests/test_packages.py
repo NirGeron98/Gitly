@@ -66,6 +66,15 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn("wait for my approval", source)
         self.assertNotIn("Move it into your project", source)
 
+    def test_website_offers_terminal_and_zip_install_tabs(self):
+        source = (ROOT / "website/src/main.tsx").read_text(encoding="utf-8")
+        self.assertIn('role="tablist"', source)
+        self.assertIn("Terminal <b>Fastest</b>", source)
+        self.assertIn("Download ZIP", source)
+        for agent in AGENTS:
+            self.assertIn(f"sh -s -- {agent}", source)
+        self.assertIn("raw.githubusercontent.com/NirGeron98/Navi/main/install.sh", source)
+
 
 if __name__ == "__main__":
     unittest.main()
