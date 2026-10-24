@@ -1,0 +1,68 @@
+from __future__ import annotations
+
+import os
+import subprocess
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+INSTALLER = ROOT / "install.sh"
+SKILLS = sorted(path.name for path in (ROOT / "packages/skills").iterdir() if path.name.startswith("navi-"))
+
+
+class TerminalInstallerTests(unittest.TestCase):
+    def run_installer(self, project: Path, agent: str) -> subprocess.CompletedProcess[str]:
+        env = os.environ.copy()
+        env["NAVI_SOURCE_URL"] = ROOT.as_uri()
+        return subprocess.run(
+            ["sh", INSTALLER, agent],
+            cwd=project,
+            env=env,
+            text=True,
+            capture_output=True,
+        )
+
+    def test_codex_install_is_complete_and_idempotent(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary) / "project"
+            project.mkdir()
+
+            first = self.run_installer(project, "codex")
+            self.assertEqual(first.returncode, 0, first.stderr)
+            for name in SKILLS:
+                self.assertEqual(
+                    (project / ".agents/skills" / name / "SKILL.md").read_bytes(),
+                    (ROOT / "packages/skills" / name / "SKILL.md").read_bytes(),
+                )
+            self.assertEqual((project / ".navi/NAVI.md").read_bytes(), (ROOT / "packages/shared/NAVI.md").read_bytes())
+
+            second = self.run_installer(project, "codex")
+            self.assertEqual(second.returncode, 0, second.stderr)
+            self.assertIn("already up to date", second.stdout)
+
+    def test_conflict_stops_before_any_new_file_is_written(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary) / "project"
+            conflict = project / ".agents/skills/navi-save/SKILL.md"
+            conflict.parent.mkdir(parents=True)
+            conflict.write_text("user version\n", encoding="utf-8")
+
+            result = self.run_installer(project, "codex")
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("stopped before making changes", result.stderr)
+            self.assertEqual(conflict.read_text(encoding="utf-8"), "user version\n")
+            self.assertFalse((project / ".agents/skills/navi-setup/SKILL.md").exists())
+            self.assertFalse((project / ".navi/NAVI.md").exists())
+
+    def test_unknown_agent_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary) / "project"
+            project.mkdir()
+            result = self.run_installer(project, "unknown")
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("claude-code|codex|cursor", result.stderr)
+
+
+if __name__ == "__main__":
+    unittest.main()
