@@ -1,4 +1,4 @@
-import { StrictMode, useState } from 'react'
+import { StrictMode, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 
@@ -84,12 +84,22 @@ function InstallTabs() {
   </div>
 }
 
+function PromoVideo() {
+  const video = useRef<HTMLVideoElement>(null)
+  const [started, setStarted] = useState(false)
+
+  return <div className="promo-video">
+    <video ref={video} src="/gitly-promo.mp4" poster="/gitly-promo-poster.jpg" controls={started} playsInline preload="none" onPlay={() => setStarted(true)} aria-label="30-second Gitly product tour" />
+    {!started && <button type="button" className="promo-play" onClick={() => void video.current?.play()}><span aria-hidden="true">▶</span>Watch the 30-second tour</button>}
+  </div>
+}
+
 export function App() {
   return <>
     <header className="nav">
       <a className="brand" href="#top"><Mark />Gitly</a>
       <nav aria-label="Main navigation">
-        <a href="#install">Install</a><a href="#how">How it works</a><a href="#safety">Safety</a>
+        <a href="#install">Install</a><a href="#watch">Watch</a><a href="#how">How it works</a><a href="#safety">Safety</a>
       </nav>
       <a className="nav-cta" href="#download">Get Gitly</a>
     </header>
@@ -117,6 +127,11 @@ export function App() {
       </section>
 
       <section className="strip" aria-label="Principles"><span>Natural language</span><i /> <span>No prior Git knowledge</span><i /> <span>Local by default</span><i /> <span>English + עברית</span></section>
+
+      <section className="section promo" id="watch" aria-labelledby="watch-title">
+        <div className="section-head"><span className="kicker">See it in action</span><h2 id="watch-title">Gitly in 30 seconds.</h2><p>Save your progress, back it up to GitHub, and try new ideas—just by asking your coding assistant.</p></div>
+        <PromoVideo />
+      </section>
 
       <section className="section examples">
         <div className="section-head"><span className="kicker">Say it your way</span><h2>No commands to memorize.</h2></div>
