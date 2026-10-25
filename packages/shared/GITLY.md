@@ -10,13 +10,31 @@ Gitly is a set of agent instructions, not an executable safety boundary. Follow 
 - Separate verified facts from inferred effects. A diff can show code changed; it does not prove the feature works.
 - Inspect the minimum evidence needed. Reuse the current turn's fresh history/diff results instead of repeatedly reading the repository.
 
+## Questions and choices
+
+- Ask only for missing intent, preferences, or decisions that affect the current workflow. Inspect discoverable project facts first and reuse answers the user already gave.
+- Apply this question policy in Codex, Claude Code, and Cursor. Prefer the current host's native structured question UI over a plain chat question whenever an available tool supports it in the current mode. Select the tool from the host's actual tool list:
+
+  | Host | Native question tool |
+  | --- | --- |
+  | Codex | `request_user_input` or `request_user_input_async`, when exposed and permitted |
+  | Claude Code | `AskUserQuestion`, when exposed and permitted |
+  | Cursor | The built-in **Ask questions** tool, using the name exposed in the current session |
+
+  Follow the selected tool's limits; do not switch to Plan mode just to show choices or assume another host uses the same tool names.
+- Write a short, self-contained question in the user's language. For a real choice, offer two or three distinct options with clear consequences; mark a recommendation only when justified. Use free text when the answer needs a name, path, or explanation, and allow a custom answer when supported.
+- For example, ask “Where should this save go?” / “איפה לשמור את ההתקדמות?” with “Local only” / “רק במחשב” and “Local + GitHub” / “במחשב וגם ב־GitHub”. This selects the intended scope; it does not approve a commit or push.
+- If the structured UI is unavailable, disallowed in the current mode, or fails, ask the same question in chat with numbered options or a free-text prompt. Never render pretend buttons or claim a question was shown when it was not.
+- Wait for a required answer before doing work that depends on it. An asynchronous tool acknowledging delivery, a preselected option, no reply, or elapsed time is not the user's answer. Continue independent inspection while waiting when useful.
+- Keep clarification separate from action approval. A choice of destination, visibility, files, or recovery approach does not authorize mutation. Use the approval protocol below for the resulting concrete plan; never use a question tool for approval if the host forbids that use.
+
 ## Approval protocol
 
 Read-only inspection does not need approval. Before every mutation:
 
 1. Inspect the actual repository root, current branch/HEAD, working tree, staged changes, relevant refs/remotes, and prerequisites.
 2. Create a short plan ID and present a numbered plan in plain language: exact action, paths/refs/remotes, local and remote effects, meaningful risks, and recovery path.
-3. Ask for explicit approval of that plan. Prefer the host's native approval UI. Otherwise ask the user to reply `Approve plan <ID>` / `אישור תוכנית <ID>`.
+3. Ask for explicit approval of that plan. Prefer the host's native approval UI only when available and permitted for this purpose. Otherwise ask the user to reply `Approve plan <ID>` / `אישור תוכנית <ID>`. Do not substitute a clarification-only question tool for approval.
 4. Do not interpret the original request, a standing preference, an unrelated “yes,” or approval of another plan as approval.
 5. Immediately before execution, repeat the relevant read-only checks. If HEAD, branch, status, staged set, target refs, remotes, or selected files changed, discard the approval and prepare a new plan.
 6. Execute only the listed actions, verify the result, and summarize what actually happened. Approval expires after execution, rejection, a relevant state change, or the current conversation turn moving to another operation.

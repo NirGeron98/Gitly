@@ -24,6 +24,16 @@ class PackageTests(unittest.TestCase):
             with zipfile.ZipFile(archive) as package:
                 names = set(package.namelist())
                 guide = package.read(GUIDE_PATH.as_posix()).decode("utf-8")
+                self.assertIsNone(package.testzip())
+                self.assertEqual(
+                    package.read(f"{PACKAGE_ROOT.as_posix()}/shared/GITLY.md"),
+                    (ROOT / "packages/shared/GITLY.md").read_bytes(),
+                )
+                for name in SKILLS:
+                    self.assertEqual(
+                        package.read(f"{PACKAGE_ROOT.as_posix()}/skills/{name}/SKILL.md"),
+                        (ROOT / "packages/skills" / name / "SKILL.md").read_bytes(),
+                    )
             expected = {GUIDE_PATH.as_posix(), f"{PACKAGE_ROOT.as_posix()}/shared/GITLY.md"} | {
                 f"{PACKAGE_ROOT.as_posix()}/skills/{name}/SKILL.md" for name in SKILLS
             }

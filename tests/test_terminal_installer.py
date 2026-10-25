@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INSTALLER = ROOT / "install.sh"
 SKILLS = sorted(path.name for path in (ROOT / "packages/skills").iterdir() if path.name.startswith("gitly-"))
+AGENTS = {"codex": ".agents/skills", "claude-code": ".claude/skills", "cursor": ".cursor/skills"}
 
 
 class TerminalInstallerTests(unittest.TestCase):
@@ -23,23 +24,26 @@ class TerminalInstallerTests(unittest.TestCase):
             capture_output=True,
         )
 
-    def test_codex_install_is_complete_and_idempotent(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            project = Path(temporary) / "project"
-            project.mkdir()
+    def test_each_agent_install_is_complete_and_idempotent(self):
+        for agent, skill_root in AGENTS.items():
+            with self.subTest(agent=agent), tempfile.TemporaryDirectory() as temporary:
+                project = Path(temporary) / "project"
+                project.mkdir()
 
-            first = self.run_installer(project, "codex")
-            self.assertEqual(first.returncode, 0, first.stderr)
-            for name in SKILLS:
-                self.assertEqual(
-                    (project / ".agents/skills" / name / "SKILL.md").read_bytes(),
-                    (ROOT / "packages/skills" / name / "SKILL.md").read_bytes(),
-                )
-            self.assertEqual((project / ".gitly/GITLY.md").read_bytes(), (ROOT / "packages/shared/GITLY.md").read_bytes())
+                first = self.run_installer(project, agent)
+                self.assertEqual(first.returncode, 0, first.stderr)
+                for name in SKILLS:
+                    installed = project / skill_root / name / "SKILL.md"
+                    self.assertEqual(installed.read_bytes(), (ROOT / "packages/skills" / name / "SKILL.md").read_bytes())
+                    shared_reference = installed.parent / "../../../.gitly/GITLY.md"
+                    self.assertEqual(shared_reference.resolve(), (project / ".gitly/GITLY.md").resolve())
+                    self.assertEqual(shared_reference.read_bytes(), (ROOT / "packages/shared/GITLY.md").read_bytes())
 
-            second = self.run_installer(project, "codex")
-            self.assertEqual(second.returncode, 0, second.stderr)
-            self.assertIn("already up to date", second.stdout)
+                before = {path: (path.stat().st_mtime_ns, path.read_bytes()) for path in project.rglob("*") if path.is_file()}
+                second = self.run_installer(project, agent)
+                self.assertEqual(second.returncode, 0, second.stderr)
+                self.assertIn("already up to date", second.stdout)
+                self.assertEqual(before, {path: (path.stat().st_mtime_ns, path.read_bytes()) for path in project.rglob("*") if path.is_file()})
 
     def test_conflict_stops_before_any_new_file_is_written(self):
         with tempfile.TemporaryDirectory() as temporary:

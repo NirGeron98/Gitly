@@ -85,6 +85,8 @@ You do not need to memorize Git commands or skill names. Ask for the result you 
 - “Connect this project to GitHub as a private repository.”
 - “תחזיר רק את קובץ ההתחברות לגרסה מאתמול.”
 
+When Gitly needs a choice or clarification in Codex, Claude Code, or Cursor, it prefers that agent's built-in question UI when available, with a chat fallback. Choosing an option sets the intended scope; approval of the resulting action is separate.
+
 ## Included skills
 
 | Skill | What it does |
