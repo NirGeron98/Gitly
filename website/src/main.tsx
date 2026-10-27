@@ -1,4 +1,4 @@
-import { StrictMode, useRef, useState } from 'react'
+import { StrictMode, useRef, useState, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 
@@ -19,6 +19,34 @@ const features: [string, string, string, string, string][] = [
 
 const INSTALL_PROMPT = 'Install Gitly now in this currently open project from the newest Gitly ZIP (or its matching extracted folder) in my Downloads folder. Do not ask me to move it into the project. If Downloads access requires native permission, request it. Confirm the package matches this AI coding agent, extract it temporarily if needed, and read gitly-install/INSTALL.md. This message is my explicit approval to create missing directories and copy all new Gitly files without asking for another confirmation. For installation only, this approval supersedes any package-guide step that says to show me a plan or wait for approval. If every destination is missing or byte-for-byte identical, proceed immediately, verify the installation, clean up only temporary files you created, and report the result. Stop and ask me only if the package is invalid, targets another agent, or a destination file differs. Do not delete my downloaded package.'
 
+const VIBE_MD = 'https://www.vibe-md.dev'
+const REPOSITORY = 'https://github.com/NirGeron98/Gitly'
+
+const ICONS = {
+  arrow: 'M5 12h14M13 6l6 6-6 6',
+  download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
+  check: 'M20 6 9 17l-5-5',
+  info: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-4M12 8h.01',
+  moon: 'M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z',
+  sun: 'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4',
+}
+
+function Icon({ d }: { d: string }) {
+  return <svg className="icon" viewBox="0 0 24 24" aria-hidden="true"><path d={d} /></svg>
+}
+
+function GitHubIcon() {
+  return <svg className="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3" /></svg>
+}
+
+function LinkedInIcon() {
+  return <svg className="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg>
+}
+
+function PlayIcon() {
+  return <svg className="icon icon-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" /></svg>
+}
+
 export function Mark() {
   return <span className="mark" aria-hidden="true">
     <svg viewBox="0 0 32 32">
@@ -29,6 +57,40 @@ export function Mark() {
       <path d="M24 10.5v1c0 4.7-3.8 8.5-8.5 8.5H8" />
     </svg>
   </span>
+}
+
+function BrandLockup() {
+  return <div className="brand">
+    <a className="brand-home" href={VIBE_MD} aria-label="vibe.md home"><span className="brand-badge" aria-hidden="true">~/</span><span className="brand-name">vibe.md</span></a>
+    <span className="brand-sep" aria-hidden="true">/</span>
+    <a className="brand-sub" href="#top">gitly</a>
+  </div>
+}
+
+function ThemeToggle() {
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'))
+
+  function toggle() {
+    const next = !dark
+    document.documentElement.classList.toggle('dark', next)
+    try { localStorage.setItem('theme', next ? 'dark' : 'light') } catch { /* storage unavailable: theme still applies for this visit */ }
+    setDark(next)
+  }
+
+  return <button type="button" className="icon-button" aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'} onClick={toggle}><Icon d={dark ? ICONS.sun : ICONS.moon} /></button>
+}
+
+function CopyButton({ text, label, children = 'Copy' }: { text: string, label: string, children?: ReactNode }) {
+  const [copied, setCopied] = useState(false)
+
+  function copy() {
+    void navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1600)
+    })
+  }
+
+  return <button type="button" className="copy-button" aria-label={label} onClick={copy}>{copied ? <><Icon d={ICONS.check} />Copied</> : children}</button>
 }
 
 type Platform = 'claude' | 'codex' | 'cursor'
@@ -54,33 +116,51 @@ function PlatformIcon({ platform }: { platform: Platform }) {
 function InstallTabs() {
   const [method, setMethod] = useState<'terminal' | 'zip'>('terminal')
 
-  return <div className="install-methods" id="download">
+  return <div className="install-card" id="download">
     <div className="install-tabs" role="tablist" aria-label="Choose an installation method">
       <button type="button" role="tab" aria-selected={method === 'terminal'} aria-controls="terminal-install" onClick={() => setMethod('terminal')}><span>01</span> Terminal <b>Fastest</b></button>
       <button type="button" role="tab" aria-selected={method === 'zip'} aria-controls="zip-install" onClick={() => setMethod('zip')}><span>02</span> Download ZIP</button>
     </div>
 
-    {method === 'terminal' ? <div className="install-panel terminal-panel" id="terminal-install" role="tabpanel">
-      <div className="install-panel-head"><div><span className="kicker">One command</span><h3>Install directly into your project.</h3></div><p>Open Terminal in your project folder, then run the command for your agent. No ZIP, moving files, or prompt needed.</p></div>
+    {method === 'terminal' ? <div className="install-panel" id="terminal-install" role="tabpanel">
+      <div className="install-panel-head"><div><p className="eyebrow">One command</p><h3>Install directly into your project.</h3></div><p>Open Terminal in your project folder, then run the command for your agent. No ZIP, moving files, or prompt needed.</p></div>
       <div className="command-grid">
         {TERMINAL_INSTALLS.map(({ platform, name, command }) => <article key={platform}>
-          <h3><PlatformIcon platform={platform} />{name}</h3>
-          <div className="command-line"><code>{command}</code><button type="button" aria-label={`Copy ${name} install command`} onClick={() => void navigator.clipboard?.writeText(command)}>Copy</button></div>
+          <h4 className="agent-name"><PlatformIcon platform={platform} />{name}</h4>
+          <div className="command-line dark"><code><span aria-hidden="true">$ </span>{command}</code><CopyButton text={command} label={`Copy ${name} install command`} /></div>
         </article>)}
       </div>
-      <div className="terminal-steps"><span><b>1</b> Open your project folder in Terminal</span><span><b>2</b> Run the matching command</span><span><b>3</b> Reload your agent and say “Set up Gitly”</span></div>
-      <p className="install-note">Works on macOS, Linux, and Windows through WSL or Git Bash. The installer checks all destinations first and stops without changing anything if it finds a different existing Gitly file.</p>
-    </div> : <div className="install-panel zip-panel" id="zip-install" role="tabpanel">
-      <div className="install-panel-head"><div><span className="kicker">Guided download</span><h3>Download a package for your agent.</h3></div><p>Prefer not to use Terminal? Download the ZIP and let your coding agent install it from Downloads.</p></div>
-      <div className="install-grid">
-        <div><h3><PlatformIcon platform="claude" />Claude Code</h3><a href="/downloads/gitly-claude-code.zip" download>Download Claude Code ZIP →</a></div>
-        <div><h3><PlatformIcon platform="codex" />Codex</h3><a href="/downloads/gitly-codex.zip" download>Download Codex ZIP →</a></div>
-        <div><h3><PlatformIcon platform="cursor" />Cursor</h3><a href="/downloads/gitly-cursor.zip" download>Download Cursor ZIP →</a></div>
+      <ol className="steps"><li><b>1</b>Open your project folder in Terminal</li><li><b>2</b>Run the matching command</li><li><b>3</b>Reload your agent and say “Set up Gitly”</li></ol>
+      <p className="note"><Icon d={ICONS.info} /><span>Works on macOS, Linux, and Windows through WSL or Git Bash. The installer checks all destinations first and stops without changing anything if it finds a different existing Gitly file.</span></p>
+    </div> : <div className="install-panel" id="zip-install" role="tabpanel">
+      <div className="install-panel-head"><div><p className="eyebrow">Guided download</p><h3>Download a package for your agent.</h3></div><p>Prefer not to use Terminal? Download the ZIP and let your coding agent install it from Downloads.</p></div>
+      <div className="download-grid">
+        <article><h4 className="agent-name"><PlatformIcon platform="claude" />Claude Code</h4><p>gitly-claude-code.zip</p><a className="button button-outline" href="/downloads/gitly-claude-code.zip" download><Icon d={ICONS.download} />Download Claude Code ZIP</a></article>
+        <article><h4 className="agent-name"><PlatformIcon platform="codex" />Codex</h4><p>gitly-codex.zip</p><a className="button button-outline" href="/downloads/gitly-codex.zip" download><Icon d={ICONS.download} />Download Codex ZIP</a></article>
+        <article><h4 className="agent-name"><PlatformIcon platform="cursor" />Cursor</h4><p>gitly-cursor.zip</p><a className="button button-outline" href="/downloads/gitly-cursor.zip" download><Icon d={ICONS.download} />Download Cursor ZIP</a></article>
       </div>
-      <div className="install-flow"><h3>Then install it with your agent.</h3><ol><li><b>01</b><span><strong>Leave it in Downloads</strong><small>No extracting, moving, or hidden folders.</small></span></li><li><b>02</b><span><strong>Open your project</strong><small>Use the same AI coding agent you downloaded for.</small></span></li><li><b>03</b><span><strong>Paste the prompt below</strong><small>Pasting it authorizes a clean installation.</small></span></li><li><b>04</b><span><strong>Install and reload</strong><small>Your agent installs, verifies, and reports—then reload it.</small></span></li></ol></div>
-      <div className="install-prompt"><div><span>Paste this into your AI agent</span><button type="button" onClick={() => void navigator.clipboard?.writeText(INSTALL_PROMPT)}>Copy prompt</button></div><p>{INSTALL_PROMPT}</p></div>
-      <p className="install-note">Your agent may still request one-time native permission to read Downloads. It proceeds immediately when destinations are new or identical, and asks only if it finds a conflict or an invalid package. If your browser saves elsewhere, paste the ZIP’s full path into chat.</p>
+      <div className="install-flow"><h4>Then install it with your agent.</h4><ol><li><b>01</b><span><strong>Leave it in Downloads</strong><small>No extracting, moving, or hidden folders.</small></span></li><li><b>02</b><span><strong>Open your project</strong><small>Use the same AI coding agent you downloaded for.</small></span></li><li><b>03</b><span><strong>Paste the prompt below</strong><small>Pasting it authorizes a clean installation.</small></span></li><li><b>04</b><span><strong>Install and reload</strong><small>Your agent installs, verifies, and reports—then reload it.</small></span></li></ol></div>
+      <div className="install-prompt"><div><span>Paste this into your AI agent</span><CopyButton text={INSTALL_PROMPT} label="Copy install prompt">Copy prompt</CopyButton></div><p>{INSTALL_PROMPT}</p></div>
+      <p className="note"><Icon d={ICONS.info} /><span>Your agent may still request one-time native permission to read Downloads. It proceeds immediately when destinations are new or identical, and asks only if it finds a conflict or an invalid package. If your browser saves elsewhere, paste the ZIP’s full path into chat.</span></p>
     </div>}
+  </div>
+}
+
+function HeroSession() {
+  return <div className="terminal dark" aria-label="Illustrative Gitly session">
+    <div className="term-bar"><span className="term-dots" aria-hidden="true"><i /><i /><i /></span><span className="term-tab">~/your-project</span><span className="term-tab">skill: gitly</span></div>
+    <div className="term-body">
+      <p><span className="t-who">you ›</span> Save my progress and back it up online.</p>
+      <p><span className="t-who t-agent">agent ›</span> I found 3 changed files. Here’s the plan:</p>
+      <ol className="t-plan"><li>Save them locally as <strong>“Add weekly focus view”</strong></li><li>Upload <strong>main</strong> to <strong>origin</strong> on GitHub</li></ol>
+      <p className="t-meta"><span className="t-ok">✓</span> No likely secrets or large files found</p>
+      <p className="t-meta"><span className="t-warn">!</span> This creates one local version and updates GitHub</p>
+      <p className="t-approve"><span><span className="t-who">you ›</span> APPROVE PLAN A7C2</span><small>current state only</small></p>
+      <p className="t-cmd"><span>$</span> git commit -m "Add weekly focus view"</p>
+      <p className="t-cmd"><span>$</span> git push origin main</p>
+      <p className="t-done">✓ Saved 8d7c1a2 · backed up to origin/main<span className="caret" aria-hidden="true" /></p>
+    </div>
+    <div className="term-foot"><span><i />main</span><span>illustrative session</span></div>
   </div>
 }
 
@@ -90,85 +170,158 @@ function PromoVideo() {
 
   return <div className="promo-video">
     <video ref={video} src="/gitly-promo.mp4" poster="/gitly-promo-poster.jpg" controls={started} playsInline preload="none" onPlay={() => setStarted(true)} aria-label="30-second Gitly product tour" />
-    {!started && <button type="button" className="promo-play" onClick={() => void video.current?.play()}><span aria-hidden="true">▶</span>Watch the 30-second tour</button>}
+    {!started && <button type="button" className="promo-play" onClick={() => void video.current?.play()}><PlayIcon />Watch the 30-second tour</button>}
   </div>
+}
+
+function SectionHead({ eyebrow, title, text, id }: { eyebrow: string, title: ReactNode, text?: string, id?: string }) {
+  return <div className="section-head"><p className="eyebrow">{eyebrow}</p><h2 id={id}>{title}</h2>{text && <p className="lede">{text}</p>}</div>
 }
 
 export function App() {
   return <>
-    <header className="nav">
-      <a className="brand" href="#top"><Mark />Gitly</a>
-      <nav aria-label="Main navigation">
-        <a href="#install">Install</a><a href="#watch">Watch</a><a href="#how">How it works</a><a href="#safety">Safety</a>
-      </nav>
-      <a className="nav-cta" href="#download">Get Gitly</a>
+    <header className="site-header">
+      <div className="container">
+        <BrandLockup />
+        <nav className="nav-links" aria-label="Main navigation">
+          <a href="#install">Install</a><a href="#watch">Watch</a><a href="#workflows">Workflows</a><a href="#safety">Safety</a><a href="#faq">FAQ</a>
+        </nav>
+        <div className="header-actions">
+          <a className="icon-button" href={REPOSITORY} aria-label="Gitly on GitHub"><GitHubIcon /></a>
+          <ThemeToggle />
+          <a className="button-sm" href="#install"><Icon d={ICONS.download} />Install</a>
+        </div>
+      </div>
     </header>
 
     <main id="main">
       <section className="hero" id="top">
-        <div className="glow glow-one" /><div className="glow glow-two" />
-        <div className="eyebrow"><span /> Your guide through vibe coding</div>
-        <h1>Just build.<br /><em>Gitly handles the rest.</em></h1>
-        <p className="lede">Describe what you want in natural language. Gitly guides your coding agent through safe Git, project checks, recovery, and online backup—without requiring prior technical knowledge.</p>
-        <div className="hero-install" id="install">
-          <span className="kicker">Install Gitly</span>
-          <h2>Choose how you want to install.</h2>
+        <div className="bg-grid" aria-hidden="true" /><div className="hero-wash" aria-hidden="true" />
+        <div className="container hero-inner">
+          <div>
+            <a className="hero-pill" href={`${VIBE_MD}/skills`}><b>vibe.md skill</b>Your guide through vibe coding<Icon d={ICONS.arrow} /></a>
+            <h1>Just build. <span className="gradient-text">Gitly handles the rest.</span></h1>
+            <p className="hero-lede">Describe what you want in natural language. Gitly guides your coding agent through safe Git, project checks, recovery, and online backup—without requiring prior technical knowledge.</p>
+            <div className="hero-actions">
+              <a className="button button-primary" href="#install">Install Gitly <Icon d={ICONS.arrow} /></a>
+              <a className="button button-outline" href="#watch"><PlayIcon />Watch the tour</a>
+            </div>
+            <p className="hero-note">Free & local-first · No Gitly app or runtime</p>
+          </div>
+          <HeroSession />
+        </div>
+      </section>
+
+      <section className="principles" aria-label="Principles"><div className="container"><span>Natural language</span><span>No prior Git knowledge</span><span>Local by default</span><span>English + עברית</span></div></section>
+
+      <section className="section tinted" id="install" aria-labelledby="install-title">
+        <div className="container">
+          <SectionHead eyebrow="Install Gitly" id="install-title" title="Choose how you want to install." text="Git is required. GitHub CLI is needed only for GitHub features. There is no Gitly app or runtime to keep running." />
           <InstallTabs />
         </div>
-        <p className="requirements">Free & local-first · No Gitly app or runtime · Git required · GitHub CLI only for GitHub features</p>
+      </section>
 
-        <div className="conversation" id="how" aria-label="Example Gitly approval conversation">
-          <div className="window-bar"><span /><span /><span /><b>AI agent · your-project</b></div>
-          <div className="messages">
-            <div className="you"><small>You</small><p>Save my progress and back it up online.</p></div>
-            <div className="gitly"><small><Mark /> Gitly</small><p>I found 3 changed files. I’ll save them locally as <strong>“Add weekly focus view”</strong>, then upload <strong>main</strong> to <strong>origin</strong>.</p><ul><li><span>✓</span> No likely secrets or large files found</li><li><span>!</span> This creates one local version and updates GitHub</li></ul><div className="approval"><code>APPROVE PLAN A7C2</code><span>Chat approval · current state only</span></div></div>
+      <section className="section" id="watch" aria-labelledby="watch-title">
+        <div className="container">
+          <SectionHead eyebrow="See it in action" id="watch-title" title="Gitly in 30 seconds." text="Save your progress, back it up to GitHub, and try new ideas—just by asking your coding assistant." />
+          <PromoVideo />
+        </div>
+      </section>
+
+      <section className="section tinted" aria-labelledby="examples-title">
+        <div className="container">
+          <SectionHead eyebrow="Say it your way" id="examples-title" title="No commands to memorize." text="Ask in everyday English or Hebrew. Gitly turns it into the right Git workflow." />
+          <div className="example-grid">
+            <article className="example-card"><header><span>English</span><b>EN</b></header><ul><li>“Try a new dashboard without affecting the working version.”</li><li>“What changed between version 2 and version 5?”</li><li>“From now on, only save locally.”</li></ul></article>
+            <article className="example-card" dir="rtl" lang="he"><header><span>עברית</span><b>עב</b></header><ul><li>״תנסה עיצוב חדש בלי לפגוע בגרסה הקיימת.״</li><li>״מה השתנה בין גרסה 2 לגרסה 5?״</li><li>״מעכשיו תשמור רק מקומית.״</li></ul></article>
           </div>
         </div>
       </section>
 
-      <section className="strip" aria-label="Principles"><span>Natural language</span><i /> <span>No prior Git knowledge</span><i /> <span>Local by default</span><i /> <span>English + עברית</span></section>
-
-      <section className="section promo" id="watch" aria-labelledby="watch-title">
-        <div className="section-head"><span className="kicker">See it in action</span><h2 id="watch-title">Gitly in 30 seconds.</h2><p>Save your progress, back it up to GitHub, and try new ideas—just by asking your coding assistant.</p></div>
-        <PromoVideo />
-      </section>
-
-      <section className="section examples">
-        <div className="section-head"><span className="kicker">Say it your way</span><h2>No commands to memorize.</h2></div>
-        <div className="example-grid"><div><span>EN</span><blockquote>“Try a new dashboard without affecting the working version.”</blockquote><blockquote>“What changed between version 2 and version 5?”</blockquote><blockquote>“From now on, only save locally.”</blockquote></div><div dir="rtl"><span>עב</span><blockquote>״תנסה עיצוב חדש בלי לפגוע בגרסה הקיימת.״</blockquote><blockquote>״מה השתנה בין גרסה 2 לגרסה 5?״</blockquote><blockquote>״מעכשיו תשמור רק מקומית.״</blockquote></div></div>
-      </section>
-
-      <section className="section feature-section">
-        <div className="section-head"><span className="kicker">Twelve guided workflows</span><h2>One clear route forward.</h2></div>
-        <div className="feature-grid">{features.map(([title, text, icon, say, result], index) => <article key={title} tabIndex={0}><div className="feature-top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon} /></svg><span>{String(index + 1).padStart(2, '0')}</span></div><h3>{title}</h3><p>{text}</p><div className="feature-pop" role="tooltip"><small>You say</small><q>{say.replace(/[“”]/g, '')}</q><small>Gitly shows</small><b>{result}</b></div></article>)}</div>
-      </section>
-
-      <section className="section history-preview">
-        <div><span className="kicker">Human-readable history</span><h2>Your work,<br />as a story.</h2><p>Git remains the source of truth. Gitly adds readable dates and summaries without inventing behavior.</p></div>
-        <div className="timeline">
-          <article><i /><small>Today, 14:32 · 8d7c1a2b</small><h3>Add weekly focus view</h3><p>3 files changed · local + GitHub</p></article>
-          <article><i /><small>Yesterday, 18:06 · e21af093</small><h3>Polish mobile navigation</h3><p>5 files changed · local</p></article>
-          <article><i /><small>Mon, 10:11 · 03bc772e</small><h3>First working dashboard</h3><p>12 files changed · local + GitHub</p></article>
+      <section className="section" id="workflows" aria-labelledby="workflows-title">
+        <div className="container">
+          <SectionHead eyebrow="Twelve guided workflows" id="workflows-title" title="One clear route forward." text="Hover or tap a workflow to see what you say and what Gitly shows back." />
+          <div className="workflow-grid">{features.map(([title, text, icon, say, result], index) => <article key={title} tabIndex={0}>
+            <div className="workflow-top"><span className="icon-box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon} /></svg></span><span className="workflow-num">{String(index + 1).padStart(2, '0')}</span></div>
+            <h3>{title}</h3><p>{text}</p>
+            <div className="workflow-pop"><small>You say</small><q>{say.replace(/[“”]/g, '')}</q><small>Gitly shows</small><b>{result}</b></div>
+          </article>)}</div>
         </div>
       </section>
 
-      <section className="section safety" id="safety">
-        <div className="shield"><Mark /><span>Local-first<br />by design</span></div>
-        <div><span className="kicker">Safety by clear procedure</span><h2>A deliberate pause before anything changes.</h2><p>Read-only skills can inspect safely. Before any change, Gitly requires a plain-language plan, explicit approval, a fresh state check, and result verification.</p><div className="safety-grid"><p><b>Fresh state checks</b>Changed files, branches, or remotes require a new plan.</p><p><b>Action-specific approval</b>A save never silently authorizes a push.</p><p><b>No destructive shortcuts</b>No force push, hard reset, clean, or guessed conflicts.</p><p><b>No secret storage</b>Credentials stay with Git and GitHub CLI.</p></div><aside>Honest boundary: Gitly is a set of agent instructions, not executable enforcement. A host agent with terminal access can bypass Markdown. Use the host’s native permission controls for a stronger boundary.</aside></div>
+      <section className="section tinted" aria-labelledby="history-title">
+        <div className="container history">
+          <div><p className="eyebrow">Human-readable history</p><h2 id="history-title">Your work, as a story.</h2><p className="lede">Git remains the source of truth. Gitly adds readable dates and summaries without inventing behavior.</p></div>
+          <div className="timeline-card">
+            <div className="timeline-head"><span>History</span><span><i />main</span></div>
+            <ol className="timeline">
+              <li><small>Today, 14:32 · 8d7c1a2b</small><h3>Add weekly focus view</h3><p>3 files changed · local + GitHub</p></li>
+              <li><small>Yesterday, 18:06 · e21af093</small><h3>Polish mobile navigation</h3><p>5 files changed · local</p></li>
+              <li><small>Mon, 10:11 · 03bc772e</small><h3>First working dashboard</h3><p>12 files changed · local + GitHub</p></li>
+            </ol>
+          </div>
+        </div>
       </section>
 
-      <section className="section faq"><div className="section-head"><span className="kicker">Questions, answered</span><h2>FAQ</h2></div><div className="faq-list">
-        <details><summary>Does Gitly upload my code?</summary><p>No. Gitly adds instructions to your project. Code reaches GitHub only after an approved push, using your existing Git/GitHub authentication.</p></details>
-        <details><summary>Do I need to know Git?</summary><p>No. Gitly explains normal workflows in everyday language. Experts can still use Git vocabulary.</p></details>
-        <details><summary>What if Git or GitHub CLI is missing?</summary><p>The setup skill reports exactly what is missing and guides you to official installation steps. Git is required for versioning; GitHub CLI is needed only for GitHub features. Gitly itself has no runtime.</p></details>
-        <details><summary>What if an AI change broke my project?</summary><p>Gitly checks the current project first and explains the evidence without changing anything. It restores an earlier version only when you explicitly ask to go back.</p></details>
-        <details><summary>Why did Gitly ask for approval again?</summary><p>Your files, branch, remote, or intended action may have changed. The skills require a fresh plan instead of treating an earlier “yes” as permanent permission.</p></details>
-        <details><summary>How do I update or remove Gitly?</summary><p>Review and replace only the <code>gitly-*</code> skill folders and <code>.gitly/GITLY.md</code>. To remove it, delete those same files. Keep <code>.gitly/config.md</code> if you want to preserve preferences.</p></details>
-      </div></section>
+      <section className="section" id="safety" aria-labelledby="safety-title">
+        <div className="container safety">
+          <div>
+            <p className="eyebrow">Safety by clear procedure</p>
+            <h2 id="safety-title">A deliberate pause before anything changes.</h2>
+            <p className="lede">Read-only skills can inspect safely. Before any change, Gitly requires a plain-language plan, explicit approval, a fresh state check, and result verification.</p>
+            <aside className="note"><Icon d={ICONS.info} /><span><strong>Honest boundary:</strong> Gitly is a set of agent instructions, not executable enforcement. A host agent with terminal access can bypass Markdown. Use the host’s native permission controls for a stronger boundary.</span></aside>
+          </div>
+          <div className="guard-card">
+            <div className="guard-head"><Mark /><span><strong>Local-first by design</strong><small>Every change follows the same route</small></span></div>
+            <ol className="track"><li><i /><small>01</small>Plan</li><li><i /><small>02</small>Approve</li><li><i /><small>03</small>Re-check</li><li><i /><small>04</small>Verify</li></ol>
+            <ul className="guard-list">
+              <li><span className="check"><Icon d={ICONS.check} /></span><div><strong>Fresh state checks</strong><p>Changed files, branches, or remotes require a new plan.</p></div></li>
+              <li><span className="check"><Icon d={ICONS.check} /></span><div><strong>Action-specific approval</strong><p>A save never silently authorizes a push.</p></div></li>
+              <li><span className="check"><Icon d={ICONS.check} /></span><div><strong>No destructive shortcuts</strong><p>No force push, hard reset, clean, or guessed conflicts.</p></div></li>
+              <li><span className="check"><Icon d={ICONS.check} /></span><div><strong>No secret storage</strong><p>Credentials stay with Git and GitHub CLI.</p></div></li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-      <section className="final-cta"><Mark /><h2>Choose the destination.<br /><em>Gitly guides the route.</em></h2><div className="actions"><a className="button primary" href="#install">Choose your agent <span aria-hidden="true">↑</span></a></div></section>
+      <section className="section tinted" id="faq" aria-labelledby="faq-title">
+        <div className="container faq">
+          <div><p className="eyebrow">Questions, answered</p><h2 id="faq-title">FAQ</h2><p className="lede">Short answers about privacy, setup, recovery, and approvals.</p></div>
+          <div className="faq-list">
+            <details><summary>Does Gitly upload my code?</summary><p>No. Gitly adds instructions to your project. Code reaches GitHub only after an approved push, using your existing Git/GitHub authentication.</p></details>
+            <details><summary>Do I need to know Git?</summary><p>No. Gitly explains normal workflows in everyday language. Experts can still use Git vocabulary.</p></details>
+            <details><summary>What if Git or GitHub CLI is missing?</summary><p>The setup skill reports exactly what is missing and guides you to official installation steps. Git is required for versioning; GitHub CLI is needed only for GitHub features. Gitly itself has no runtime.</p></details>
+            <details><summary>What if an AI change broke my project?</summary><p>Gitly checks the current project first and explains the evidence without changing anything. It restores an earlier version only when you explicitly ask to go back.</p></details>
+            <details><summary>Why did Gitly ask for approval again?</summary><p>Your files, branch, remote, or intended action may have changed. The skills require a fresh plan instead of treating an earlier “yes” as permanent permission.</p></details>
+            <details><summary>How do I update or remove Gitly?</summary><p>Review and replace only the <code>gitly-*</code> skill folders and <code>.gitly/GITLY.md</code>. To remove it, delete those same files. Keep <code>.gitly/config.md</code> if you want to preserve preferences.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section className="cta-section">
+        <div className="container">
+          <div className="cta-card">
+            <div className="bg-grid" aria-hidden="true" /><div className="hero-wash" aria-hidden="true" />
+            <div className="cta-content">
+              <Mark />
+              <h2>Choose the destination. <span className="gradient-text">Gitly guides the route.</span></h2>
+              <p>Gitly is the first skill on vibe.md. More skills for testing, debugging, and deployment are on the way.</p>
+              <div className="cta-actions"><a className="button button-primary" href="#install">Choose your agent <Icon d={ICONS.arrow} /></a><a className="button button-outline" href={`${VIBE_MD}/skills`}>Browse all skills</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer><a className="brand" href="#top"><Mark />Gitly</a><p>Natural-language guidance for safer software development.</p><p>Open package · No hosted backend</p></footer>
+
+    <footer className="site-footer">
+      <div className="container footer-main">
+        <div className="footer-brand"><BrandLockup /><p>Natural-language guidance for safer software development.</p></div>
+        <nav aria-label="Gitly"><p className="footer-title">Gitly</p><ul><li><a href="#install">Install</a></li><li><a href="#workflows">Workflows</a></li><li><a href="#safety">Safety</a></li><li><a href="#faq">FAQ</a></li><li><a href={REPOSITORY}>Source code</a></li></ul></nav>
+        <nav aria-label="vibe.md"><p className="footer-title">vibe.md</p><ul><li><a href={`${VIBE_MD}/skills`}>Skills directory</a></li><li><a href={`${VIBE_MD}/#how-it-works`}>How it works</a></li><li><a href={`${VIBE_MD}/about`}>About</a></li><li><a href={`${VIBE_MD}/submit`}>Submit a skill</a></li></ul></nav>
+        <div><p className="footer-title">Contact</p><ul><li><a href="https://www.linkedin.com/in/adi-ber-a151841b2"><LinkedInIcon />Adi Ber</a></li><li><a href="https://www.linkedin.com/in/nir-geron-459711208"><LinkedInIcon />Nir Geron</a></li></ul></div>
+      </div>
+      <div className="footer-bottom"><div className="container"><p>© vibe.md. Open-source AI agent skills.</p><p className="mono">Open package · No hosted backend</p></div></div>
+    </footer>
   </>
 }
 
